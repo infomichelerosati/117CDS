@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verifica Guida Neopatentati</title>
+    <!-- Link al Web App Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <!-- Colore della barra di stato sui browser mobili -->
+    <meta name="theme-color" content="#2563eb">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Stile per nascondere le frecce negli input numerici */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+        /* Stile per i fieldset disabilitati */
+        fieldset:disabled, input:disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-2xl bg-white rounded-xl shadow-lg p-6 md:p-8 space-y-6">
+        
+        <!-- Intestazione -->
+        <div class="text-center">
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Verifica Guida Neopatentati</h1>
+            <p class="text-gray-500 mt-1">Controlla se puoi guidare un veicolo secondo l'Art. 117 del CdS.</p>
+        </div>
+
+        <!-- Form per l'inserimento dei dati -->
+        <form id="check-form" class="space-y-6">
+            
+            <!-- Sezione Dati Conducente -->
+            <fieldset class="border border-gray-200 rounded-lg p-4">
+                <legend class="text-lg font-semibold text-gray-700 px-2">Dati Conducente</legend>
+                <div>
+                    <label for="license-date" class="block text-sm font-medium text-gray-600 mb-1">Data conseguimento Patente B</label>
+                    <input type="text" id="license-date" name="license-date" placeholder="GG/MM/AAAA" required maxlength="10" class="w-full px-3 py-2.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="mt-4 flex items-center">
+                    <input id="has-higher-license" name="has-higher-license" type="checkbox" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                    <label for="has-higher-license" class="ml-2 block text-sm text-gray-800">Possiedi anche una patente di categoria superiore (C, D, BE, CE, etc.)?</label>
+                </div>
+            </fieldset>
+
+            <!-- Sezione Dati Veicolo -->
+            <fieldset id="vehicle-fieldset" class="border border-gray-200 rounded-lg p-4 transition-opacity duration-300">
+                <legend class="text-lg font-semibold text-gray-700 px-2">Dati Veicolo</legend>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Campo Potenza con Tooltip Cliccabile -->
+                    <div class="relative">
+                        <div class="flex items-center space-x-1">
+                            <label for="power-kw" class="block text-sm font-medium text-gray-600 mb-1">Potenza (kW)</label>
+                            <div class="text-blue-500 cursor-pointer" data-tooltip-toggle="tooltip-power">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            </div>
+                        </div>
+                        <input type="number" id="power-kw" name="power-kw" placeholder="Es. 68" required class="w-full px-3 py-2.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <div id="tooltip-power" class="absolute bottom-full left-0 mb-2 w-max max-w-xs p-2 text-center text-xs text-white bg-gray-900 rounded-md opacity-0 pointer-events-none z-10 transition-opacity">
+                            Inserisci la <strong>potenza massima</strong> del veicolo espressa in kW. La trovi alla voce <strong>P.2</strong> della Carta di Circolazione.
+                        </div>
+                    </div>
+                    <!-- Campo Tara con Tooltip Cliccabile -->
+                    <div class="relative">
+                        <div class="flex items-center space-x-1">
+                            <label for="tara-kg" class="block text-sm font-medium text-gray-600 mb-1">Tara (kg)</label>
+                            <div class="text-blue-500 cursor-pointer" data-tooltip-toggle="tooltip-tara">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            </div>
+                        </div>
+                        <input type="number" id="tara-kg" name="tara-kg" placeholder="Es. 1200" required class="w-full px-3 py-2.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <div id="tooltip-tara" class="absolute bottom-full left-0 mb-2 w-max max-w-xs p-2 text-center text-xs text-white bg-gray-900 rounded-md opacity-0 pointer-events-none z-10 transition-opacity">
+                           Trovi questo valore, espresso in kg, alla voce <strong>(G) Massa a vuoto</strong> della Carta di Circolazione.
+                        </div>
+                    </div>
+                </div>
+                 <div class="mt-4 flex items-center">
+                    <input id="is-m1" name="is-m1" type="checkbox" checked class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                    <label for="is-m1" class="ml-2 block text-sm text-gray-800">Il veicolo è di categoria M1 (autovettura)?</label>
+                </div>
+            </fieldset>
+            
+            <!-- Sezione Esclusioni -->
+             <fieldset id="exceptions-fieldset" class="border border-gray-200 rounded-lg p-4 transition-opacity duration-300">
+                <legend class="text-lg font-semibold text-gray-700 px-2">Altri Casi Particolari</legend>
+                 <div class="space-y-2">
+                    <div class="flex items-start">
+                        <input id="instructor-present" name="instructor-present" type="checkbox" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 mt-1">
+                        <label for="instructor-present" class="ml-2 block text-sm text-gray-800">A fianco del conducente è presente un istruttore qualificato.</label>
+                    </div>
+                    <div class="flex items-start">
+                        <input id="disabled-person-present" name="disabled-person-present" type="checkbox" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 mt-1">
+                        <label for="disabled-person-present" class="ml-2 block text-sm text-gray-800">Veicolo adibito a servizio di persona invalida (art. 188) presente a bordo.</label>
+                    </div>
+                 </div>
+            </fieldset>
+
+            <!-- Pulsante di Verifica -->
+            <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition duration-300 ease-in-out transform hover:scale-105">
+                Verifica
+            </button>
+        </form>
+
+        <!-- Area Risultati -->
+        <div id="result-container" class="hidden p-5 rounded-lg text-white space-y-2">
+            <h2 id="result-message" class="text-xl font-bold"></h2>
+            <div id="result-details" class="text-sm"></div>
+        </div>
+        
+        <!-- Disclaimer -->
+        <div class="text-center text-xs text-gray-400 pt-4 border-t border-gray-200">
+             <p>Questa applicazione è uno strumento di ausilio basato sull'interpretazione dell'art. 117 del CdS. I dati hanno valore indicativo. Verificare sempre con le fonti ufficiali come il Portale dell'Automobilista.</p>
+        </div>
+
+    </div>
+
+    <script>
+        // --- REGISTRAZIONE DEL SERVICE WORKER ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js').then(registration => {
+                    console.log('ServiceWorker registrato con successo: ', registration.scope);
+                }, err => {
+                    console.log('Registrazione del ServiceWorker fallita: ', err);
+                });
+            });
+        }
+        
+        // --- RIFERIMENTI AGLI ELEMENTI DEL DOM ---
+        const form = document.getElementById('check-form');
+        const licenseDateInput = document.getElementById('license-date');
+        const powerKwInput = document.getElementById('power-kw');
+        const taraKgInput = document.getElementById('tara-kg');
+        const isM1Checkbox = document.getElementById('is-m1');
+        const vehicleFieldset = document.getElementById('vehicle-fieldset');
+        const exceptionsFieldset = document.getElementById('exceptions-fieldset');
+        const resultContainer = document.getElementById('result-container');
+        const resultMessage = document.getElementById('result-message');
+        const resultDetails = document.getElementById('result-details');
+
+        /**
+         * Funzione per parsare una data in formato italiano (GG/MM/AAAA)
+         */
+        function parseItalianDate(dateString) {
+            const parts = dateString.match(/^(\d{2})[-\/](\d{2})[-\/](\d{4})$/);
+            if (!parts) return null;
+            const day = parseInt(parts[1], 10), month = parseInt(parts[2], 10), year = parseInt(parts[3], 10);
+            const today = new Date();
+            if (year < 1900 || year > today.getFullYear() || month < 1 || month > 12 || day < 1 || day > 31) return null;
+            const date = new Date(year, month - 1, day);
+            if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) return null;
+            return date;
+        }
+
+        /**
+         * Funzione principale di verifica
+         */
+        function checkNeopatentato(licenseDate, hasHigherLicense, powerKw, taraKg, isM1, instructorPresent, disabledPersonPresent) {
+            const result = { canDrive: false, message: "", details: [] };
+            const today = new Date();
+            if (licenseDate > today) {
+                result.message = "La data della patente non può essere nel futuro.";
+                return result;
+            }
+            const yearsSinceLicense = (today - licenseDate) / (1000 * 60 * 60 * 24 * 365.25);
+            if (yearsSinceLicense >= 3) {
+                result.canDrive = true;
+                result.message = "Nessuna limitazione. Sono trascorsi più di 3 anni dal conseguimento della patente.";
+                return result;
+            }
+            if (hasHigherLicense) {
+                result.canDrive = true;
+                result.message = "PUOI GUIDARE QUESTO VEICOLO";
+                result.details.push("Le restrizioni per neopatentati non si applicano se si possiede una patente di categoria superiore.");
+                return result;
+            }
+            if (instructorPresent || disabledPersonPresent) {
+                result.canDrive = true;
+                result.message = "PUOI GUIDARE QUESTO VEICOLO";
+                if (instructorPresent) result.details.push("Le limitazioni non si applicano perché è presente un istruttore qualificato.");
+                if (disabledPersonPresent) result.details.push("Le limitazioni non si applicano per servizio a persona invalida presente sul veicolo.");
+                return result;
+            }
+             if (!powerKw || powerKw <= 0) {
+                 result.message = "Errore: Inserisci la potenza del veicolo.";
+                 return result;
+            }
+            if (isM1 && powerKw > 105) {
+                result.message = "NON PUOI GUIDARE QUESTO VEICOLO";
+                result.details.push(`La potenza massima (${powerKw} kW) supera il limite di 105 kW per i veicoli M1.`);
+                return result;
+            }
+            if (!taraKg || taraKg <= 0) {
+                result.message = "Errore: Inserisci la tara del veicolo.";
+                return result;
+            }
+            const taraT = taraKg / 1000;
+            const powerToWeightRatio = powerKw / taraT;
+            if (powerToWeightRatio > 75) {
+                result.message = "NON PUOI GUIDARE QUESTO VEICOLO";
+                result.details.push(`Il rapporto potenza/tara (${powerToWeightRatio.toFixed(2)} kW/t) supera il limite di 75 kW/t.`);
+            } else {
+                result.canDrive = true;
+                result.message = "PUOI GUIDARE QUESTO VEICOLO";
+                result.details.push(`<b>Rapporto Potenza/Tara calcolato:</b> ${powerToWeightRatio.toFixed(2)} kW/t (Limite: 75 kW/t).`);
+                if (isM1) result.details.push(`<b>Potenza massima:</b> ${powerKw} kW (Limite per M1: 105 kW).`);
+                result.details.push("<br><b>ATTENZIONE:</b> Ricorda di rispettare i limiti di velocità (100 km/h in autostrada, 90 km/h su extraurbane principali).");
+            }
+            return result;
+        }
+
+        const setFieldsetsDisabled = (disabled) => {
+            vehicleFieldset.disabled = disabled;
+            exceptionsFieldset.disabled = disabled;
+        };
+        
+        /**
+         * Gestisce i controlli immediati durante l'inserimento dei dati
+         */
+        function handleImmediateChecks() {
+            const licenseDate = parseItalianDate(licenseDateInput.value);
+            const powerKw = parseFloat(powerKwInput.value);
+            const isM1 = isM1Checkbox.checked;
+
+            if (licenseDate) {
+                const yearsSinceLicense = (new Date() - licenseDate) / (1000 * 60 * 60 * 24 * 365.25);
+                if (yearsSinceLicense >= 3) {
+                    resultMessage.textContent = "Nessuna limitazione. Sono trascorsi più di 3 anni.";
+                    resultDetails.innerHTML = "";
+                    resultContainer.classList.remove('hidden', 'bg-red-600', 'bg-yellow-500');
+                    resultContainer.classList.add('bg-green-600');
+                    setFieldsetsDisabled(true);
+                    return;
+                }
+            }
+            
+            setFieldsetsDisabled(false);
+
+            if (isM1 && powerKw > 105) {
+                resultMessage.textContent = "NON PUOI GUIDARE QUESTO VEICOLO";
+                resultDetails.innerHTML = `La potenza massima (${powerKw} kW) supera il limite di 105 kW per i veicoli M1.`;
+                resultContainer.classList.remove('hidden', 'bg-green-600', 'bg-yellow-500');
+                resultContainer.classList.add('bg-red-600');
+                taraKgInput.disabled = true;
+                return;
+            }
+
+            taraKgInput.disabled = false;
+            resultContainer.classList.add('hidden');
+        }
+        
+        licenseDateInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 2) value = value.substring(0, 2) + '/' + value.substring(2);
+            if (value.length > 5) value = value.substring(0, 5) + '/' + value.substring(5, 9);
+            e.target.value = value;
+            handleImmediateChecks();
+        });
+
+        powerKwInput.addEventListener('input', handleImmediateChecks);
+        isM1Checkbox.addEventListener('change', handleImmediateChecks);
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const licenseDate = parseItalianDate(licenseDateInput.value);
+            if (!licenseDate) {
+                 resultMessage.textContent = "Errore: Inserisci una data valida nel formato GG/MM/AAAA.";
+                 resultDetails.innerHTML = "";
+                 resultContainer.classList.remove('hidden', 'bg-green-600', 'bg-red-600').classList.add('bg-yellow-500');
+                 return;
+            }
+            
+            const result = checkNeopatentato(
+                licenseDate,
+                document.getElementById('has-higher-license').checked,
+                parseFloat(powerKwInput.value),
+                taraKgInput.disabled ? 0 : parseFloat(taraKgInput.value), // Passa 0 se il campo è disabilitato
+                isM1Checkbox.checked,
+                document.getElementById('instructor-present').checked,
+                document.getElementById('disabled-person-present').checked
+            );
+
+            resultMessage.textContent = result.message;
+            resultDetails.innerHTML = result.details.join('<br>');
+            resultContainer.classList.remove('hidden', 'bg-green-600', 'bg-red-600', 'bg-yellow-500');
+            
+            if (result.message.startsWith("Errore")) resultContainer.classList.add('bg-yellow-500');
+            else if (result.canDrive) resultContainer.classList.add('bg-green-600');
+            else resultContainer.classList.add('bg-red-600');
+        });
+
+        // --- Logica per i Tooltip Cliccabili ---
+        document.querySelectorAll('[data-tooltip-toggle]').forEach(toggle => {
+            const tooltip = document.getElementById(toggle.dataset.tooltipToggle);
+            if (tooltip) {
+                toggle.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    document.querySelectorAll('.tooltip-visible').forEach(vt => {
+                        if (vt !== tooltip) vt.classList.remove('opacity-100', 'pointer-events-auto', 'tooltip-visible');
+                    });
+                    tooltip.classList.toggle('opacity-100');
+                    tooltip.classList.toggle('pointer-events-auto');
+                    tooltip.classList.toggle('tooltip-visible');
+                });
+            }
+        });
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.tooltip-visible').forEach(t => t.classList.remove('opacity-100', 'pointer-events-auto', 'tooltip-visible'));
+        });
+    </script>
+</body>
+</html>
+
