@@ -3,7 +3,7 @@
     "short_name": "Neopatentati",
     "description": "Verifica se un neopatentato può guidare un veicolo secondo l'Art. 117 CdS.",
     "start_url": "./",
-    "display": "fullscreen",
+    "display": "standalone",
     "background_color": "#f3f4f6",
     "theme_color": "#2563eb",
     "icons": [
