@@ -1,5 +1,5 @@
 // Definisce il nome e la versione della cache
-const CACHE_NAME = 'neopatentati-checker-v1';
+const CACHE_NAME = 'neopatentati-checker-v2';
 // Lista dei file essenziali da memorizzare nella cache per il funzionamento offline
 const urlsToCache = [
   '/',
